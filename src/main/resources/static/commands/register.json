@@ -1,0 +1,12 @@
+{
+    "name": "register",
+    "description": "Registers a Dota account id to your user",
+    "options": [
+        {
+            "type": 4,
+            "name": "account_id",
+            "description": "Your Dota account id",
+            "required": true
+        }
+    ]
+}

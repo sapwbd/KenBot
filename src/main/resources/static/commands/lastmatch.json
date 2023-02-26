@@ -1,0 +1,12 @@
+{
+    "name": "lastmatch",
+    "description": "Last match stats for a Dota account. If account_id left empty, defaults to your last match stats",
+    "options": [
+        {
+            "type": 4,
+            "name": "account_id",
+            "description": "A Dota account id",
+            "required": false
+        }
+    ]
+}

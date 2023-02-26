@@ -1,0 +1,12 @@
+{
+    "name": "profile",
+    "description": "DotA profile stats for a Dota account. If account_id left empty, defaults to your user",
+    "options": [
+        {
+            "type": 4,
+            "name": "account_id",
+            "description": "A Dota account id",
+            "required": false
+        }
+    ]
+}
