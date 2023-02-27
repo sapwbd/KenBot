@@ -2,12 +2,11 @@ package com.sapwbd.kenbot.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sapwbd.kenbot.rest.exceptions.CustomHttpResponseException;
 import jakarta.annotation.PostConstruct;
+import org.apache.hc.client5.http.HttpResponseException;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.HttpStatus;
-import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.support.ClassicRequestBuilder;
 import org.springframework.stereotype.Component;
 
@@ -46,14 +45,15 @@ public class OpenDotaUtility {
             httpClient.execute(ClassicRequestBuilder.get(getOpenDotaURL(CONSTANTS, HEROES)).build(), response -> {
                 if (response.getCode() == HttpStatus.SC_OK) {
                     JsonNode jsonNode = mapper.readTree(response.getEntity().getContent());
-                    jsonNode.fields().forEachRemaining(heroIdHeroNodeEntry -> heroIdNameMap.put(heroIdHeroNodeEntry.getKey(), heroIdHeroNodeEntry.getValue()
-                                                                                                                                             .get("localized_name")
-                                                                                                                                             .asText()));
+                    jsonNode.fields()
+                            .forEachRemaining(heroIdHeroNodeEntry -> heroIdNameMap.put(heroIdHeroNodeEntry.getKey(), heroIdHeroNodeEntry.getValue()
+                                                                                                                                        .get("localized_name")
+                                                                                                                                        .asText()));
                     return true;
                 }
-                throw new CustomHttpResponseException(response.getCode(), response.getReasonPhrase(), EntityUtils.toString(response.getEntity()));
+                throw new HttpResponseException(response.getCode(), response.getReasonPhrase());
             });
-        } catch (CustomHttpResponseException e) {
+        } catch (HttpResponseException e) {
             if (e.getStatusCode() == HttpStatus.SC_TOO_MANY_REQUESTS) {
                 // Log rate limiting
             }

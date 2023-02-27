@@ -17,7 +17,7 @@ public class KenBotApplication {
 
     @Bean
     public GatewayDiscordClient discordClient() {
-        return DiscordClientBuilder.create(System.getenv("BOT_TOKEN")).build().gateway().login().block();
+        return DiscordClientBuilder.create(System.getProperty("BOT_TOKEN")).build().gateway().login().block();
     }
 
     @Bean
