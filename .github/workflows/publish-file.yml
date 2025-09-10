@@ -1,0 +1,37 @@
+name: Publish File to Pages
+
+on:
+  workflow_dispatch:
+    inputs:
+      source-branch:
+        description: "Branch containing the file"
+        required: true
+        default: "master"
+      source-file:
+        description: "Path to the schema file (relative to repo root)"
+        required: true
+        default: "README.md"
+      target-filename:
+        description: "Name to publish it as (e.g. openapi.yaml)"
+        required: true
+        default: "README"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout selected branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.source-branch }}
+
+      - name: Prepare publish folder
+        run: |
+          mkdir public
+          cp "${{ github.event.inputs.source-file }}" "public/${{ github.event.inputs.target-filename }}"
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
