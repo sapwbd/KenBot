@@ -15,7 +15,8 @@ on:
         description: "Name to publish it as (e.g. openapi.yaml)"
         required: true
         default: "README"
-
+permissions:
+  contents: write
 jobs:
   publish:
     runs-on: ubuntu-latest
